@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, ErrorHandler } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { AddBookComponent } from "./add-book/add-book.component";
@@ -11,6 +11,7 @@ import { EditBookComponent } from "./edit-book/edit-book.component";
 import { EditReaderComponent } from "./edit-reader/edit-reader.component";
 import { LoggerService } from "./core/logger.service";
 import { DataService } from "./core/data.service";
+import { BookTrackerErrorHandlerService } from "./core/book-tracker-error-handler.service";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { DataService } from "./core/data.service";
     // },
     LoggerService,
     DataService,
+    { provide: ErrorHandler, useClass: BookTrackerErrorHandlerService },
   ],
   bootstrap: [AppComponent],
 })

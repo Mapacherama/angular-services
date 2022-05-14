@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Version, VERSION } from "@angular/core";
 
 import { Book } from "app/models/book";
 import { Reader } from "app/models/reader";
 import { LoggerService } from "../core/logger.service";
 import { DataService } from "../core/data.service";
 import { BookTrackerError } from "../models/bookTrackerError";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-dashboard",
@@ -18,7 +19,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private loggerService: LoggerService,
-    private dataService: DataService
+    private dataService: DataService,
+    private title: Title
   ) {}
 
   ngOnInit() {
@@ -34,9 +36,13 @@ export class DashboardComponent implements OnInit {
       this.loggerService.error(err)
     );
 
+    this.title.setTitle(`Book Tracker ${VERSION.full}`);
+
     this.loggerService.log(
       "Done with the initialization process of the Dashboard."
     );
+
+    throw new Error("Ugly technical bananza!");
   }
 
   private async getAuthorRecommendationAsync(readerID: number): Promise<void> {
