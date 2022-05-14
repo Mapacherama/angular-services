@@ -4,6 +4,7 @@ import { Book } from "app/models/book";
 import { Reader } from "app/models/reader";
 import { LoggerService } from "../core/logger.service";
 import { DataService } from "../core/data.service";
+import { BookTrackerError } from "../models/bookTrackerError";
 
 @Component({
   selector: "app-dashboard",
@@ -22,8 +23,27 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.allBooks = this.dataService.getAllBooks();
-    this.allReaders = this.dataService.getAllReaders();
+    this.dataService.getAllReaders().subscribe(
+      (data: Reader[] | BookTrackerError) => (this.allReaders = <Reader[]>data),
+      (err: BookTrackerError) => this.loggerService.log(err.friendlyMessage),
+      () => this.loggerService.log("All done getting readers!")
+    );
     this.mostPopularBook = this.dataService.mostPopularBook;
+
+    this.getAuthorRecommendationAsync(1).catch((err) =>
+      this.loggerService.error(err)
+    );
+
+    this.loggerService.log(
+      "Done with the initialization process of the Dashboard."
+    );
+  }
+
+  private async getAuthorRecommendationAsync(readerID: number): Promise<void> {
+    let author: string = await this.dataService.getAuthorRecommendation(
+      readerID
+    );
+    this.loggerService.log(author);
   }
 
   deleteBook(bookID: number): void {

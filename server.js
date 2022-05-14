@@ -28,7 +28,7 @@ app.use('/api/readers', readers);
 app.use('/api/books', books);
 app.use('/api/errors', errors);
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 // catch 404 and forward to error handler
@@ -64,7 +64,7 @@ app.use(function(err, req, res, next) {
 
 var debug = require('debug')('server');
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 
 app.listen(app.get('port'));
 
